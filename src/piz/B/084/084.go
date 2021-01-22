@@ -1,20 +1,8 @@
 package main
 import (
 	. "fmt"
-	"strings"
+	"sort"
 )
-
-func uniq(slice []int) []int {
-	m := make(map[int]int)
-	uniq := make([]int, 0)
-	for _, e := range slice {
-		if _, ok := m[e]; !ok {
-			m[e] = 0
-			uniq = append(uniq, e)
-		}
-	}
-	return uniq
-}
 
 func main() {
 	var n, m, k int
@@ -29,43 +17,38 @@ func main() {
 		}
 	}
 
-	var target []int
-	for i := 0; i <= m; i++ {
-		if i == 0 { continue }
+	tmp := make(map[int]struct{})
+	for i := 1; i <= m; i++ {
 		cnt := 0
+		var target []int
 
 		for j := 0; j < n; j++ {
 			if grid[0][j] == 3 && grid[i][j] == 3 {
 				cnt++
 			}
+
+			if grid[0][j] == 0 && grid[i][j] == 3 {
+				target = append(target, j+1)
+			}
 		}
 
 		if cnt >= k {
-			target = append(target, i)
-		}
-	}
-
-	var ans []int
-	for _, i := range target {
-		for j := 0; j < n; j++ {
-			if grid[0][j] == 0 && grid[i][j] == 3 {
-				ans = append(ans, j+1)
+			for _, e := range target {
+				tmp[e] = struct{}{}
 			}
 		}
 	}
 
-	if len(ans) == 0 {
+	var ans []int
+	for e := range tmp {
+		ans = append(ans, e)
+	}
+	sort.Ints(ans)
+
+	if len(ans) > 0 {
+		a := Sprint(ans)
+		Println(a[1:len(a)-1])
+	} else {
 		Println("no")
-		return
 	}
-
-	ans = uniq(ans)
-
-	str := ""
-    for _, a := range ans {
-        str += Sprintf("%d ", a)
-	}
-	str = strings.TrimRight(str, " ")
-
-	Println(str)
 }
