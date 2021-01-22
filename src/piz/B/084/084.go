@@ -17,7 +17,7 @@ func main() {
 		}
 	}
 
-	tmp := make(map[int]struct{})
+	tmp := make(map[int]int)
 	for i := 1; i <= m; i++ {
 		cnt := 0
 		var target []int
@@ -34,7 +34,7 @@ func main() {
 
 		if cnt >= k {
 			for _, e := range target {
-				tmp[e] = struct{}{}
+				tmp[e] = 0
 			}
 		}
 	}
